@@ -11,16 +11,16 @@
 (require 'package)
 
 (defvar my-packages
-  '(better-defaults
-;;    company
+  '(material
+    better-defaults
+    company
 ;;    company-go
-    cyberpunk-theme
     direnv
     elpy
     exec-path-from-shell
     fill-column-indicator
     flycheck
-    flycheck-golangci-lint
+;;    flycheck-golangci-lint
 ;;    go-add-tags
 ;;    go-eldoc
 ;;    go-guru
@@ -40,7 +40,6 @@
 
 (add-to-list 'package-archives
              '("melpa" . "http://melpa.org/packages/"))
-
 
 (when (not package-archive-contents)
     (package-refresh-contents))
