@@ -23,12 +23,9 @@
       linum-format "%4d \u2502 "
       backup-directory-alist `((".*" . ,temporary-file-directory))
       auto-save-file-name-transforms `((".*" ,temporary-file-directory t))
-      inhibit-startup-message t
       sml/no-confirm-load-theme t
       yas-global-mode 1
-      custom-file "~/.emacs.d/custom.el"
-      magit-auto-revert-mode 0
-      magit-display-buffer-function 'magit-display-buffer-fullframe-status-v1)
+      custom-file "~/.emacs.d/custom.el")
 
 (global-linum-mode t)
 
@@ -39,18 +36,8 @@
         (mark " "
               (name 16 -1) " " filename)))
 
-(load-theme 'material t)
-(setq-default cursor-type 'box)
-(set-cursor-color "#ff9933")
-
 (windmove-default-keybindings)
 (defalias 'yes-or-no-p 'y-or-n-p)
-
-(when (memq window-system '(mac ns))
-  (exec-path-from-shell-initialize))
-
-(require 'magit)
-(global-set-key (kbd "C-c g") 'magit-status)
 
 (sml/setup)
 (add-to-list 'sml/replacer-regexp-list
@@ -88,17 +75,30 @@
 ;; disable fci-mode while certain operations are being performed
 (advice-add 'web-mode-on-after-change :around #'fci-hack)
 (advice-add 'web-mode-on-post-command :around #'fci-hack)
+
 (add-hook 'company-completion-started-hook 'fci-get-and-disable)
 (add-hook 'company-completion-cancelled-hook 'fci-conditional-enable)
 (add-hook 'company-completion-finished-hook 'fci-conditional-enable)
 
 ;; customize company-mode
+(setq company-dabbrev-downcase 0)
 (setq company-idle-delay 0)
 (setq company-echo-delay 0)
 (setq company-minimum-prefix-length 1)
+;; These lines are useful to trigger the completion pressing the key you want.
+(defun tab-indent-or-complete ()
+  (interactive)
+  (if (minibufferp)
+      (minibuffer-complete)
+    (if (or (not yas-minor-mode)
+            (null (do-yas-expand)))
+        (if (check-expansion)
+            (company-complete-common)
+          (indent-for-tab-command)))))
+
+(global-set-key [backtab] 'tab-indent-or-complete)
 
 (require 'development)
-
 (load custom-file)
 
 ;; add user pip install to path
@@ -106,5 +106,28 @@
 
 (defvar emacs_home (getenv "EMACS_HOME"))
 ;;(setq default-directory emacs_home)
+
+(menu-bar-mode 1)
+
+(add-hook 'c-mode-hook 'fci-mode)
+(add-hook 'python-mode-hook 'fci-mode)
+
+;; disable aspell
+(flyspell-mode 0)
+
+;; set windows size in graphic mode
+(if (display-graphic-p)
+    (progn (setq initial-frame-alist
+            '((width . 106) ; chars
+              (height . 40))) ; lines
+           (setq default-frame-alist
+            '((width . 106)
+              (height . 40))))
+  (progn
+    (setq initial-frame-alist '( (tool-bar-lines . 0)))
+    (setq default-frame-alist '( (tool-bar-lines . 0)))))
+
+(setq-default cursor-type 'box)
+(set-cursor-color "#ff9933")
 
 ;;; init.el ends here

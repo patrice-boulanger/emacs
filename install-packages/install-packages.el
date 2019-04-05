@@ -11,30 +11,19 @@
 (require 'package)
 
 (defvar my-packages
-  '(material
-    better-defaults
+  '(better-defaults
     company
-;;    company-go
-    direnv
     elpy
     exec-path-from-shell
     fill-column-indicator
     flycheck
-;;    flycheck-golangci-lint
-;;    go-add-tags
-;;    go-eldoc
-;;    go-guru
-;;    go-mode
     js2-mode
     json-mode
-    magit
     markdown-mode
-;;    osx-clipboard
     py-autopep8
     py-isort
     rainbow-delimiters
     smart-mode-line
-;;    terraform-mode
     web-mode
     yaml-mode))
 

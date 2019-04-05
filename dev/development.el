@@ -10,27 +10,20 @@
 (require 'rainbow-delimiters)
 
 (require 'fill-column-indicator)
-(setq fci-rule-column 100)
+(setq fci-rule-column 80)
 (setq fci-rule-width 1)
-(setq fci-rule-color "darkgrey")
-
-(require 'direnv)
-(direnv-mode)
+(setq fci-rule-use-dashes 0.75)
+(setq fci-rule-color "red")
 
 (global-flycheck-mode)
 
-(add-hook 'before-save-hook 'delete-trailing-whitespace)
 (add-hook 'prog-mode-hook 'rainbow-delimiters-mode)
-(add-hook 'prog-mode-hook 'subword-mode)
 (add-hook 'prog-mode-hook 'fci-mode)
-(add-hook 'prog-mode-hook 'flyspell-prog-mode)
 
 (require '_python)
-;;(require '_golang)
 (require '_markdown)
 (require '_web)
 (require '_json)
-;;(require '_terraform)
 (require '_js)
 
 (provide 'development)
